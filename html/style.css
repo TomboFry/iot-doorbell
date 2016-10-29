@@ -1,0 +1,22 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+}
+
+body {
+	font-family: "Helvetica Neue", "Roboto", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 100;
+}
+
+.container {
+	max-width: 640px;
+	width: 100%;
+	margin: 0 auto;
+}
