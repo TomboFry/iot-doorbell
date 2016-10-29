@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>doorbell</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %} {% endblock %}
 </head>
 <body>
 	<header id="header">
@@ -21,11 +22,11 @@
 		</nav>
 		<div id="content">
 			<section id="content-header">
-				<h2 id="content-title"><!-- Page Title (eg. Settings) --></h2>
-				<h3 id="content-subtitle"><!-- Page Subtitle (eg. Users) --></h3>
+                <h2 id="content-title">{% block title %}{% endblock %}</h2>
+                <h3 id="content-subtitle">{% block subtitle %}{% endblock %}</h3>
 			</section>
 			<section id="content-main">
-				<!-- Template thingy goes here? -->
+                {% block content %} {% endblock %}
 			</section>
 		</div>
 	</div>
