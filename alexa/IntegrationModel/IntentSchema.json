@@ -1,18 +1,19 @@
 {
-  "intents": [
-    {
-      "intent": "NotificationLevelIntent",
-      "slots": [
+    "intents": [
         {
-          "name": "NotificationLevel",
-          "type": "NotificationLevelList"
-        }]
-    },
-    {
-      "intent": "RingDoorBellIntent"
-    },
-    {
-      "intent": "LastRingIntent"
-    }
-  ]
+            "intent": "NotificationLevelIntent",
+            "slots": [
+                {
+                    "name": "NotificationLevel",
+                    "type": "NOTIF_LEVEL"
+                }]
+        },
+        {
+            "intent": "RingDoorBellIntent"
+        },
+        {
+            "intent": "LastRingIntent"
+        }
+    ]
 }
+
