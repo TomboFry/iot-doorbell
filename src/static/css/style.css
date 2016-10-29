@@ -7,7 +7,7 @@
 	line-height: 1;
 }
 
-body {
+body, input, button {
 	font-family: "Helvetica Neue", "Roboto", Helvetica, Arial, sans-serif;
 }
 
@@ -15,8 +15,142 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 100;
 }
 
-.container {
-	max-width: 640px;
+#header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 64px;
+	background-color: #333;
+	color: #fff;
+	padding: 16px;
+	-webkit-box-shadow: 0 0 16px rgba(0,0,0,0.5);
+	box-shadow: 0 0 16px rgba(0,0,0,0.5);
+	z-index: 1;
+}
+#header h1 {
+	font-size: 24pt;
+}
+
+#container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+	margin-top: 64px;
+}
+
+#sidebar {
+	width: 250px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	background-color: #444;
+	color: #fff;
+	font-size: 18px;
+}
+#sidebar ul {
+	list-style-type: none;
+	margin-top: 16px;
+}
+#sidebar li a {
+	padding: 16px;
+	color: #fff;
+	display: block;
+	text-decoration: none;
+}
+#sidebar li a:hover {
+	background-color: #555;
+}
+
+#content {
+	position: absolute;
+	top: 0;
+	left: 250px;
+	bottom: 0;
+	right: 0;
+	background-color: #fff;
+	padding: 24px;
+}
+#content-header, #content-title {
+	display: block;
+	margin-bottom: 24px;
+}
+#content-title {
+	font-size: 32pt;
+}
+#content-subtitle {
+	font-size: 26pt;
+}
+
+table[id^="form-"] {
 	width: 100%;
-	margin: 0 auto;
+	font-size: 16pt;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-top: 1px solid #aaa;
+}
+table[id^="form-"] th {
+	text-align: left;
+}
+table[id^="form-"] td, table[id^="form-"] th {
+	padding: 16px 0;
+	width: calc(33% - 72px);
+}
+table[id^="form-"] .form-btn-col {
+	width: 72px;
+}
+.form-input input {
+	font-size: 16px;
+	padding: 8px;
+	width: 98%;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+.form-input input:focus {
+	border: 0;
+	-webkit-box-shadow: 0 0 4px #07B;
+	box-shadow: 0 0 4px #07B;
+}
+table[id^="form-"] td.form-input {
+	padding: 0px;
+}
+tr {
+	border-bottom: 1px solid #aaa;
+}
+[class^="form-btn-"] {
+	width: 32px;
+	height: 32px;
+	font-weight: 700;
+	font-size: 16px;
+	background-color: #eee;
+	border: 0;
+	border-radius: 4px;
+	color: #fff;
+	visibility: hidden;
+}
+tr:hover [class^="form-btn-"] {
+	visibility: visible;
+}
+
+.form-btn-add {
+	background-color: #17B60F;
+}
+.form-btn-del {
+	background-color: #B61E00;
+}
+.form-btn-edit {
+	background-color: #46C5FF;
+}
+
+.form-btn-add::after {
+	content: '\2795';
+}
+.form-btn-del::before {
+	content: '\274C';
+}
+.form-btn-edit::before {
+	content: '\1F589';
 }

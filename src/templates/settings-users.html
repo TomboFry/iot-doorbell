@@ -1,0 +1,45 @@
+<form action="" id="settings-adduser" method="post">
+	<table id="form-addusers">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Phone</th>
+				<th>Email</th>
+				<th class="form-btn-col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="form-input"><input type="text" required></td>
+				<td class="form-input"><input type="tel" required></td>
+				<td class="form-input"><input type="email" required></td>
+				<td>
+					<input type="submit" value="➕" class="form-btn-add"></button>
+					<input type="reset" value="❌" class="form-btn-del"></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<table id="form-listusers">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Phone</th>
+			<th>Email</th>
+			<th class="form-btn-col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><!-- Name --></td>
+			<td><!-- Phone --></td>
+			<td><!-- Email --></td>
+			<td>
+				<input type="hidden" value="<!-- User ID -->">
+				<input class="form-btn-edit" type="submit" value="🖉" />
+				<input class="form-btn-del" type="reset" value="❌" />
+			</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta charset="UTF-8">
 	<title>doorbell</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-	<div class="container">
-		
+	<header id="header">
+		<h1>doorbell</h1>
+	</header>
+	<div id="container">
+		<nav id="sidebar">
+			<ul>
+				<li><a href="#">Dashboard</a></li>
+				<li><a href="#">Log</a></li>
+				<li><a href="#">Ring Doorbell</a></li>
+				<li><a href="#">Settings</a></li>
+			</ul>
+		</nav>
+		<div id="content">
+			<section id="content-header">
+				<h2 id="content-title"><!-- Page Title (eg. Settings) --></h2>
+				<h3 id="content-subtitle"><!-- Page Subtitle (eg. Users) --></h3>
+			</section>
+			<section id="content-main">
+				<!-- Template thingy goes here? -->
+			</section>
+		</div>
 	</div>
 </body>
 </html>
