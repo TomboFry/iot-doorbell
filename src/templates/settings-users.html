@@ -26,21 +26,13 @@
 	</table>
 </form>
 <table id="form-listusers">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Phone</th>
-			<th>Email</th>
-			<th class="form-btn-col"></th>
-		</tr>
-	</thead>
 	<tbody>
         {% for user in users %}
 		<tr>
             <td>{{user.name}}</td>
             <td>{{user.number}}</td>
             <td>{{user.email}}</td>
-			<td>
+			<td class="form-btn-col">
 				<input type="hidden" value="<!-- User ID -->">
 				<input class="form-btn-edit" type="submit" value="🖉" />
 				<input class="form-btn-del" type="reset" value="❌" />

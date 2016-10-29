@@ -7,21 +7,33 @@ client = MongoClient()
 db = client.doorbell 
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return render_template('index.html') 
-
 @app.route('/ding')
 def handle_ring():
     ding()
     return "D00T"
 
+@app.route("/")
+def page_dashboard():
+    return render_template('dashboard.html') 
+
+@app.route("/stats")
+def page_stats():
+    return render_template('stats.html') 
+
+@app.route("/settings")
+def page_settings():
+    return render_template('settings.html') 
+
 @app.route('/settings/users', methods=['GET', 'POST'])
-def users():
+def page_settings_users():
     if request.method == 'POST':
         new_user = User(request.form['name'], request.form['number'], request.form['email'])
         new_user.save()
     return render_template('settings-users.html', users=get_users())
+
+@app.route("/settings/notifications")
+def page_settings_notifications():
+    return render_template('settings-notifications.html') 
 
 def ding():
     post = {"Time": time.time()}

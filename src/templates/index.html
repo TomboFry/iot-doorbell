@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>doorbell</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% block head %} {% endblock %}
+	{% block head %} {% endblock %}
 </head>
 <body>
 	<header id="header">
@@ -14,19 +14,25 @@
 	<div id="container">
 		<nav id="sidebar">
 			<ul>
-				<li><a href="#">Dashboard</a></li>
-				<li><a href="#">Log</a></li>
+				<li><a href="/">Dashboard</a></li>
+				<li><a href="/stats">Stats</a></li>
+				<li>
+					<a href="/settings">Settings</a>
+					<ul>
+						<li><a href="/settings/users">Users</a></li>
+						<li><a href="/settings/notifications">Notifications</a></li>
+					</ul>
+				</li>
 				<li><a href="#">Ring Doorbell</a></li>
-				<li><a href="#">Settings</a></li>
 			</ul>
 		</nav>
 		<div id="content">
 			<section id="content-header">
-                <h2 id="content-title">{% block title %}{% endblock %}</h2>
-                <h3 id="content-subtitle">{% block subtitle %}{% endblock %}</h3>
+				<h2 id="content-title">{% block title %}{% endblock %}</h2>
+				<h3 id="content-subtitle">{% block subtitle %}{% endblock %}</h3>
 			</section>
 			<section id="content-main">
-                {% block content %} {% endblock %}
+				{% block content %} {% endblock %}
 			</section>
 		</div>
 	</div>

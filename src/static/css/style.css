@@ -8,7 +8,7 @@
 }
 
 body, input, button {
-	font-family: "Helvetica Neue", "Roboto", Helvetica, Arial, sans-serif;
+	font-family: "Helvetica Neue", "Roboto", "Lato", "Raleway", Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -64,6 +64,13 @@ h1, h2, h3, h4, h5, h6 {
 #sidebar li a:hover {
 	background-color: #555;
 }
+#sidebar li ul {
+	margin: 0;
+}
+#sidebar li ul li a {
+	padding-left: 32px;
+	font-size: 16px;
+}
 
 #content {
 	position: absolute;
@@ -92,12 +99,16 @@ table[id^="form-"] {
 	border-collapse: collapse;
 	border-top: 1px solid #aaa;
 }
+table[id^="form-"]:last-of-type {
+	border-top: 0;
+}
 table[id^="form-"] th {
 	text-align: left;
 }
 table[id^="form-"] td, table[id^="form-"] th {
 	padding: 16px 0;
 	width: calc(33% - 72px);
+	background-color: #fff;
 }
 table[id^="form-"] .form-btn-col {
 	width: 72px;
