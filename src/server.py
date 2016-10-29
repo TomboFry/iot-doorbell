@@ -17,7 +17,7 @@ def page_dashboard():
     return render_template('dashboard.html') 
 
 @app.route("/stats")
-def page_dashboard():
+def page_stats():
     return render_template('stats.html') 
 
 @app.route('/settings')
