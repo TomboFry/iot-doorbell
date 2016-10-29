@@ -1,7 +1,12 @@
-WorldIntent say hello
-HelloWorldIntent say hello world
-HelloWorldIntent hello
-HelloWorldIntent say hi
-HelloWorldIntent say hi world
-HelloWorldIntent hi
-HelloWorldIntent how are you
+RingDoorBellIntent Ring
+RingDoorBellIntent Test
+NotificationLevelIntent set notification {NotificationLevel}
+NotificationLevelIntent set {NotificationLevel}
+LastRingIntent When did the bell last ring
+LastRingIntent When was the last door bell
+LastRingIntent When did the door bell last ring
+LastRingIntent When did the door last go
+LastRingIntent When was the doorbell pressed last
+LastRingIntent When was the doorbell last pressed
+LastRingIntent When that the door
+LastRingIntent when was last ding dong

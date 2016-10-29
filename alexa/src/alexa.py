@@ -11,20 +11,26 @@ logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
 @ask.launch
 def launch():
-    speech_text = 'Welcome to the Alexa Skills Kit, you can say hello'
-    return question(speech_text).reprompt(speech_text).simple_card('HelloWorld', speech_text)
+    speech_text = 'Welcome to Dr Doorbell'
+    return question(speech_text).reprompt(speech_text).simple_card('', speech_text)
 
 
-@ask.intent('HelloWorldIntent')
-def hello_world():
-    speech_text = 'Hello world'
-    return statement(speech_text).simple_card('HelloWorld', speech_text)
+@ask.intent('RingDoorBellIntent')
+def RingDoorBellIntent():
+    RingBell()
+    speech_text = ''
+    return statement(speech_text).simple_card('', speech_text)
 
 
-@ask.intent('AMAZON.HelpIntent')
-def help():
-    speech_text = 'You can say hello to me!'
-    return question(speech_text).reprompt(speech_text).simple_card('HelloWorld', speech_text)
+@ask.intent('LastRingIntent')
+def LastRingIntent():
+    speech_text = 'The bell wast last rung at ' + LastRing()
+    return statement(speech_text).reprompt(speech_text).simple_card('', speech_text)
+
+@ask.intent('NotificationLevelIntent')
+def NotificationLevelIntent(level):
+    speech_text = SetNotificationLevel(level);
+    return statement(speech_text).reprompt(speech_text).simple_card('', speech_text)
 
 
 @ask.session_ended
@@ -34,3 +40,13 @@ def session_ended():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+def RingBell():
+    return;
+
+def LastRing():
+    last = "never"
+    return last;
+
+def SetNotificationLevel(level):
+    return level;

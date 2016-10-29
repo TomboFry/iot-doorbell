@@ -1,11 +1,18 @@
 {
-    "intents": [
+  "intents": [
+    {
+      "intent": "NotificationLevelIntent",
+      "slots": [
         {
-            "intent": "HelloWorldIntent"
-        },
-        {
-            "intent": "AMAZON.HelpIntent"
-        }
-    ]
+          "name": "NotificationLevel",
+          "type": "NotificationLevelList"
+        }]
+    },
+    {
+      "intent": "RingDoorBellIntent"
+    },
+    {
+      "intent": "LastRingIntent"
+    }
+  ]
 }
-
