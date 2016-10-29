@@ -144,13 +144,3 @@ tr:hover [class^="form-btn-"] {
 .form-btn-edit {
 	background-color: #46C5FF;
 }
-
-.form-btn-add::after {
-	content: '\2795';
-}
-.form-btn-del::before {
-	content: '\274C';
-}
-.form-btn-edit::before {
-	content: '\1F589';
-}
