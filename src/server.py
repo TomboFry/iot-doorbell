@@ -1,39 +1,36 @@
 import time, pymongo, os
 from twilio.rest import TwilioRestClient
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 
 client = MongoClient()
 db = client.doorbell 
 app = Flask(__name__)
 
+@app.route("/")
+def hello():
+    return render_template('index.html') 
+
 @app.route('/ding')
 def handle_ring():
     ding()
     return "D00T"
 
-@app.route("/")
-def page_dashboard():
-    return render_template('dashboard.html') 
-
-@app.route("/stats")
-def page_stats():
-    return render_template('stats.html') 
-
-@app.route("/settings")
-def page_settings():
-    return render_template('settings.html') 
-
 @app.route('/settings/users', methods=['GET', 'POST'])
-def page_settings_users():
-    if request.method == 'POST':
-        new_user = User(request.form['name'], request.form['number'], request.form['email'])
-        new_user.save()
+def users():
     return render_template('settings-users.html', users=get_users())
 
-@app.route("/settings/notifications")
-def page_settings_notifications():
-    return render_template('settings-notifications.html') 
+@app.route('/settings/users/add', methods=['POST'])
+def add_user():
+    new_user = User(request.form['name'], request.form['number'], request.form['email'])
+    new_user.save()
+    return redirect(url_for('users'))
+
+@app.route('/settings/users/update', methods=['POST'])
+def update_user():
+    user = User(request.form['name'], request.form['number'], request.form['email'], request.form['key'])
+    user.save()
+    return redirect(url_for('users'))
 
 def ding():
     post = {"Time": time.time()}
@@ -46,18 +43,23 @@ def notify():
 def get_users():
     users = []
     for user in db.users.find():
-        users.append(User(user["Name"],user["Number"],user["Email"]))
+        users.append(User(user["Name"],user["Number"],user["Email"],user["_id"]))
     return users
 
 class User(object):
-    def __init__(self, name, number, email):
+    def __init__(self, name, number, email, key=None):
         self.name = name
         self.number = number
         self.email = email
+        self.id = key
 
     def save(self):
         post = {"Name": self.name, "Number": self.number, "Email" : self.email}
-        db.users.insert_one(post)
+        if self.id == None:
+            db.users.insert_one(post)
+        else:
+            db.users.update( { "_id" : self.key }, post )      
+
     
 class Phone(object):
     def __init__(self):

@@ -2,7 +2,7 @@
 {% block title %} Settings {% endblock %}
 {% block subtitle %} Users {% endblock %}
 {% block content %}
-<form action="" id="settings-adduser" method="post">
+<form action="/settings/users/add" id="settings-adduser" method="post">
 	<table id="form-addusers">
 		<thead>
 			<tr>
@@ -33,7 +33,7 @@
             <td>{{user.number}}</td>
             <td>{{user.email}}</td>
 			<td class="form-btn-col">
-				<input type="hidden" value="<!-- User ID -->">
+                <input type="hidden" value="{{user.id}}">
 				<input class="form-btn-edit" type="submit" value="🖉" />
 				<input class="form-btn-del" type="reset" value="❌" />
 			</td>
