@@ -32,6 +32,11 @@ def update_user():
     user.save()
     return redirect(url_for('users'))
 
+@app.route('/settings/users/delete', methods=['POST'])
+def delete_user():
+    db.users.remove( { "_id" : request.form['key'] } )
+    return redirect(url_for('users'))
+
 def ding():
     post = {"Time": time.time()}
     db.dings.insert_one(post)
