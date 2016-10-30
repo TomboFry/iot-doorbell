@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import time, pymongo, os
-from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import math
 
+import module
+from alexa import Alexa
 
 HOST = os.environ.get('SERVER_ADDRESS') or '0.0.0.0'
 PORT = int(os.environ.get('SERVER_PORT') or '8080')
@@ -43,6 +44,12 @@ def stats_latest_ding():
         latest = int(time.time()) - data[0]["Time"]
         return str(latest)
 
+@app.route('/stats/count/<string:inLast>', methods=['GET'])
+def dingcount(inLast):
+    since = time.time()-int(inLast)
+    data = db.dings.find({"Time": {"$gte": since}}).count();
+    return str(data);
+
 @app.route('/settings')
 def page_settings():
     return render_template('settings.html')
@@ -75,12 +82,6 @@ def delete_user():
 @app.route('/settings/notifications')
 def page_settings_notifications():
     return render_template('settings-notifications.html')
-
-@app.route('/stats/count/<string:inLast>', methods=['GET'])
-def dingcount(inLast):
-    since = time.time()-int(inLast)
-    data = db.dings.find({"Time": {"$gte": since}}).count();
-    return str(data);
 
 @app.route('/settings/urgency/<string:urgency>', methods=['GET'])
 def urgency_set(urgency):
@@ -144,77 +145,7 @@ class User(object):
         else:
             db.users.update( { "_id" : ObjectId(self.id) }, post )      
 
-class Phone(object):
-    def __init__(self):
-        (twilio_number, twilio_account_sid, twilio_auth_token) = self.get_config()
-        self.number = twilio_number
-        self.client = TwilioRestClient(twilio_account_sid, twilio_auth_token)
-
-    def text(self, body, to):
-        self.client.messages.create(body = body, to = to, from_ = self.number)
-
-    def get_config(self):
-        twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-        twilio_auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
-        twilio_number = os.environ.get('TWILIO_NUMBER')
-
-        if not all([twilio_account_sid, twilio_auth_token, twilio_number]):
-            print("twilio config not used")
-        return (twilio_number, twilio_account_sid, twilio_auth_token)
-
-
-
-# alexa stuff
-from flask_ask import Ask, session, question, statement
-import logging
-
-ask = Ask(app, "/alexa")
-logging.getLogger('flask_ask').setLevel(logging.DEBUG)
-
-def LastRing():
-    last = stats_latest_ding();
-    unit = 'seconds';
-    if last > 60:
-        last = math.floor(float(last)/60);
-        unit = 'minutes';
-
-    if last > 60:
-        last = math.floor(last/60);
-        unit = 'hours';
-
-    return str(int(round(last))) + ' ' + unit;
-
-def SetNotificationLevel(level):
-    urgency_set(level);
-    return level;
-
-@ask.launch
-def launch():
-    speech_text = 'Welcome to Dr Doorbell'
-    return question(speech_text).simple_card('', speech_text)
-
-
-@ask.intent('RingDoorBellIntent')
-def RingDoorBellIntent():
-    ding()
-    speech_text = ''
-    return statement(speech_text).simple_card('', speech_text)
-
-
-@ask.intent('LastRingIntent')
-def LastRingIntent():
-    speech_text = 'The bell wast last rung ' + LastRing() + ' ago'
-    return statement(speech_text).simple_card('', speech_text)
-
-@ask.intent('NotificationLevelIntent',mapping={'level' : 'NotificationLevel'})
-def NotificationLevelIntent(level):
-    speech_text = SetNotificationLevel(level);
-    return statement(speech_text).simple_card('', speech_text)
-
-
-@ask.session_ended
-def session_ended():
-    return "", 200
-
 if __name__ == "__main__":
-    app.run(host=HOST, port=PORT)
+    module.load_modules("modules", [])
+    Alexa(app);
+    app.run()
