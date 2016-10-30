@@ -11,6 +11,7 @@ client = MongoClient()
 db = client.doorbell
 app = Flask(__name__)
 
+
 @app.route('/ding', methods=['POST'])
 def handle_ring():
     ding()
@@ -18,6 +19,7 @@ def handle_ring():
 
 @app.route("/")
 def page_dashboard():
+    init_users();
     return render_template('dashboard.html') 
 
 @app.route("/stats")
@@ -88,6 +90,19 @@ def urgency_get():
         db.urgency.update({}, {"status" : "medium"},upsert=True)
         urgency_get()
         return ""
+
+@app.route('/settings/init')
+def init_users():
+    if str(db.users.find().count()) == '0':
+        user = User("Dan","012100000","dan@me.lol");
+        user.save();
+        user = User("Jack", "012331232", "jack@me.lol");
+        user.save();
+        user = User("Tom","012100003240","tom@me.lol");
+        user.save();
+        user = User("Joe", "012234331232", "joe@me.lol");
+        user.save();
+    return "";
 
 def ding():
     post = {"Time": time.time()}
@@ -197,3 +212,7 @@ def session_ended():
 
 if __name__ == "__main__":
     app.run()
+
+
+
+
