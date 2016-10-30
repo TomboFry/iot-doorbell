@@ -159,4 +159,4 @@ class User(object):
 if __name__ == "__main__":
     module.load_modules("modules", [])
     Alexa(app);
-    app.run()
+    app.run(host=HOST, port=PORT)
