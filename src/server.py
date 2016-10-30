@@ -120,6 +120,18 @@ def init_users():
 def ding():
     post = {"Time": time.time()}
     db.dings.insert_one(post)
+
+    import pusher
+
+    pusher_client = pusher.Pusher(
+            app_id='264785',
+            key='c710991e5ca26dd51147',
+            secret='6cbe822c7c795fbd8135',
+            ssl=True
+            )
+
+    pusher_client.trigger('test_channel', 'my_event', {'message': 'hello world'})
+
     notify()
 
 def notify():
@@ -163,7 +175,7 @@ class User(object):
             notifiers = priorities['medium']
 
         filter(lambda m: m.name in notifiers, modules).map(lambda m: m.ding(0))
-     
+
 if __name__ == "__main__":
     module.load_modules("modules", [])
     Alexa(app);
