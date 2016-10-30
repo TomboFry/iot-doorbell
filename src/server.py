@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import time, pymongo, os
 from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request, redirect, url_for
@@ -6,8 +8,12 @@ from bson.objectid import ObjectId
 import math
 
 
-client = MongoClient()
+HOST = os.environ.get('SERVER_ADDRESS') or '0.0.0.0'
+PORT = int(os.environ.get('SERVER_PORT') or '8080')
+MHOST = os.environ.get('MONGO_ADDRESS') or 'localhost'
+MPORT = int(os.environ.get('MONGO_PORT') or '27017')
 
+client = MongoClient(MHOST, MPORT)
 db = client.doorbell
 app = Flask(__name__)
 
@@ -210,10 +216,5 @@ def NotificationLevelIntent(level):
 def session_ended():
     return "", 200
 
-
 if __name__ == "__main__":
-    app.run()
-
-
-
-
+    app.run(host=HOST, port=PORT)
