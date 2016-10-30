@@ -3,8 +3,12 @@ from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import logging
+from flask_ask import Ask, request, session, question, statement
 
 client = MongoClient()
+
+
 db = client.doorbell
 app = Flask(__name__)
 
@@ -103,6 +107,52 @@ class Phone(object):
         if not all([twilio_account_sid, twilio_auth_token, twilio_number]):
             print("twilio config not used")
         return (twilio_number, twilio_account_sid, twilio_auth_token)
+
+
+
+# alexa stuff
+ask = Ask(app, "/alexa")
+logging.getLogger('flask_ask').setLevel(logging.DEBUG)
+
+def RingBell():
+    return;
+
+def LastRing():
+    last = "never"
+    return last;
+
+def SetNotificationLevel(level):
+    return level;
+
+
+@ask.launch
+def launch():
+    speech_text = 'Welcome to Dr Doorbell'
+    return question(speech_text).simple_card('', speech_text)
+
+
+@ask.intent('RingDoorBellIntent')
+def RingDoorBellIntent():
+    RingBell()
+    speech_text = ''
+    return statement(speech_text).simple_card('', speech_text)
+
+
+@ask.intent('LastRingIntent')
+def LastRingIntent():
+    speech_text = 'The bell wast last rung at ' + LastRing()
+    return statement(speech_text).simple_card('', speech_text)
+
+@ask.intent('NotificationLevelIntent',mapping={'level' : 'NotificationLevel'})
+def NotificationLevelIntent(level):
+    speech_text = SetNotificationLevel(level);
+    return statement(speech_text).simple_card('', speech_text)
+
+
+@ask.session_ended
+def session_ended():
+    return "", 200
+
 
 if __name__ == "__main__":
     app.run()
