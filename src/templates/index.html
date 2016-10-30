@@ -19,6 +19,8 @@ var channel = pusher.subscribe('test_channel');
 channel.bind('my_event', function(data) {
     var audio = new Audio("{{ url_for('static', filename='ding.mp3') }}");
     audio.play();
+
+    setTimeout(function(){location.reload()},500);
 });
         </script>
 
