@@ -1,5 +1,60 @@
 {% extends "index.html" %}
 {% block title %} Dashboard {% endblock %}
+{% block head %} <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> {% endblock %}
 {% block content %}
+<div class="dash-buttons">
+	<div id="btn-urgency" class="dash-button urgency-low">
+		<div class="dash-button-overlay"></div>
+		<div class="dash-button-title">Urgency</div>
+		<div class="dash-button-text">Low</div>
+	</div>
+	<div id="urgency-dropdown">
+		<ul>
+			<li><a href="#" id="urgency-set-low">Low</a></li>
+			<li><a href="#" id="urgency-set-medium">Medium</a></li>
+			<li><a href="#" id="urgency-set-high">High</a></li>
+		</ul>
+	</div>
+	<div class="dash-button urgency-med">
+		<div class="dash-button-overlay"></div>
+		<div class="dash-button-title">Last Press</div>
+		<div class="dash-button-text">3 hours ago</div>
+	</div>
+	<div class="dash-button urgency-high">
+		<div class="dash-button-overlay"></div>
+		<div class="dash-button-title">Presses this week?</div>
+		<div class="dash-button-text">4</div>
+	</div>
+</div>
+<script type="text/javascript">
 
+function ready(fn) {
+	if (document.readyState != 'loading'){
+		console.log("Done");
+		fn();
+	} else {
+		console.log("Not yet");
+		document.addEventListener('DOMContentLoaded', fn);
+	}
+}
+
+function clickHandler(elm_id, fn) {
+	function(elm_id, fn) {
+		console.log("Getting element");
+		let element = document.getElementById(elm_id);
+		element.onclick = fn;
+	}
+}
+
+function toggleDropdown(elm_id) {
+	console.log("Doing the thing", elm_id);
+	let element = document.getElementById(elm_id);
+	element.classList.toggle("open");
+}
+
+ready(clickHandler("btn-urgency", toggleDropdown("urgency-dropdown")));
+
+
+
+</script>
 {% endblock %}

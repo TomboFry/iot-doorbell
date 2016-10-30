@@ -80,6 +80,7 @@ h1, h2, h3, h4, h5, h6 {
 	right: 0;
 	background-color: #fff;
 	padding: 24px;
+	overflow-y: auto;
 }
 #content-header, #content-title {
 	display: block;
@@ -144,14 +145,4 @@ tr {
 }
 tr:hover [class^="form-btn-"] {
 	visibility: visible;
-}
-
-.form-btn-add {
-	background-color: #17B60F;
-}
-.form-btn-del {
-	background-color: #B61E00;
-}
-.form-btn-edit {
-	background-color: #46C5FF;
 }

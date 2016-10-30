@@ -1,0 +1,68 @@
+#modal {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+#modal.modal-show {
+	display: block;
+}
+#modal-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #000;
+	opacity: 0.5;
+}
+#modal-content {
+	position: absolute;
+	padding: 32px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+}
+
+.form-btn-add {
+	background-color: #17B60F;
+}
+.form-btn-del {
+	background-color: #B61E00;
+}
+.form-btn-edit {
+	background-color: #46C5FF;
+}
+input[class^="form-btn-"], button[class^="form-btn-"] {
+	cursor: pointer;
+}
+
+#modal label {
+	margin-top: 16px;
+	display: block;
+	margin-bottom: 4px;
+}
+
+#modal input[id^="modal-form-"] {
+	display: block;
+	padding: 4px;
+	font-size: 20px;
+	min-width: 320px;
+}
+input[id^="modal-btn-"] {
+	border: 0;
+	background-color: #999;
+	padding: 8px;
+	font-size: 16px;
+	border-radius: 6px;
+	color: #fff;
+}
+#modal-buttons {
+	padding-top: 16px;
+	display: block;
+}
+#modal-btn-apply {
+	background-color: #23BC00;
+}

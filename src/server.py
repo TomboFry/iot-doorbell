@@ -1,10 +1,11 @@
-import time, pymongo, os
+import time, pymongo, os, re
 from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 client = MongoClient()
-db = client.doorbell 
+db = client.doorbell
 app = Flask(__name__)
 
 @app.route('/ding')
@@ -36,14 +37,16 @@ def add_user():
 
 @app.route('/settings/users/update', methods=['POST'])
 def update_user():
-    user = User(request.form['name'], request.form['number'], request.form['email'], request.form['key'])
+    data = request.get_json()
+    user = User(data['name'], data['number'], data['email'], data['key'])
     user.save()
-    return redirect(url_for('users'))
+    return ""
 
 @app.route('/settings/users/delete', methods=['POST'])
 def delete_user():
-    db.users.remove( { "_id" : request.form['key'] } )
-    return redirect(url_for('users'))
+    data = request.get_json()
+    db.users.remove( { "_id" : ObjectId(data['key']) } )
+    return ""
 
 @app.route('/settings/notifications')
 def page_settings_notifications():
@@ -63,6 +66,11 @@ def get_users():
         users.append(User(user["Name"],user["Number"],user["Email"],user["_id"]))
     return users
 
+@app.route('/settings/users/getuser/<string:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = db.users.find_one( { "_id": ObjectId(user_id) } )
+    return '{ "name": "' + user["Name"] + '", "number": "' + user["Number"] + '", "email": "' + user["Email"] + '", "key": "' + user_id + '" }'
+
 class User(object):
     def __init__(self, name, number, email, key=None):
         self.name = name
@@ -75,7 +83,7 @@ class User(object):
         if self.id == None:
             db.users.insert_one(post)
         else:
-            db.users.update( { "_id" : self.key }, post )      
+            db.users.update( { "_id" : self.id }, post )      
 
     
 class Phone(object):

@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 {% block title %} Settings {% endblock %}
 {% block subtitle %} Users {% endblock %}
+{% block head %} <link rel="stylesheet" href="{{ url_for('static', filename='css/settings-user.css') }}"> {% endblock %}
 {% block content %}
 <form action="/settings/users/add" id="settings-adduser" method="post">
 	<table id="form-addusers">
@@ -27,18 +28,121 @@
 </form>
 <table id="form-listusers">
 	<tbody>
-        {% for user in users %}
-		<tr>
-            <td>{{user.name}}</td>
-            <td>{{user.number}}</td>
-            <td>{{user.email}}</td>
+		{% for user in users %}
+		<tr id="{{user.id}}">
+			<td>{{user.name}}</td>
+			<td>{{user.number}}</td>
+			<td>{{user.email}}</td>
 			<td class="form-btn-col">
-                <input type="hidden" value="{{user.id}}">
-				<input class="form-btn-edit" type="submit" value="🖉" />
-				<input class="form-btn-del" type="reset" value="❌" />
+				<button onclick="edit('{{user.id}}');" class="form-btn-edit">🖉</button>
+				<button onclick="deleteUser('{{user.id}}');" class="form-btn-del">❌</button>
 			</td>
 		</tr>
-        {% endfor %}
+		{% endfor %}
 	</tbody>
 </table>
+<div id="modal">
+	<div id="modal-overlay" onclick="closeModal()"></div>
+	<div id="modal-content">
+		<h2>Edit Person</h2>
+
+		<label for="name">Name:</label>
+		<input name="name" id="modal-form-name" type="text" required>
+
+		<label for="number">Phone Number:</label>
+		<input name="number" id="modal-form-number" type="tel" required>
+
+		<label for="email">Email</label>
+		<input name="email" id="modal-form-email" type="email" required>
+	
+		<input type="hidden" id="modal-form-key" value="">
+
+		<div id="modal-buttons">
+			<input id="modal-btn-apply" onclick="updateUser()" value="Apply" type="submit">
+			<input id="modal-btn-cancel" onclick="closeModal()" value="Cancel" type="reset">
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+function edit(user_id) {
+
+	let request = new XMLHttpRequest();
+	request.open('GET', '/settings/users/getuser/' + user_id, true);
+
+	request.onload = function() {
+		if (this.status >= 200 && this.status < 400) {
+			let data = JSON.parse(this.response);
+			openModal(data);
+		}
+	};
+
+	request.send();
+}
+function deleteUser(user_id) {
+	let request = new XMLHttpRequest();
+	request.open('POST', '/settings/users/delete', true);
+
+	request.onload = function() {
+		if (this.status >= 200 && this.status < 400) {
+			location.reload();
+		}
+	};
+
+	request.send(JSON.stringify({"key": user_id}));
+}
+
+function openModal(data) {
+	let element = document.getElementById("modal");
+	element.classList.add("modal-show");
+
+	let modalName = document.getElementById("modal-form-name");
+	modalName.value = data["name"];
+	
+	let modalNumber = document.getElementById("modal-form-number");
+	modalNumber.value = data["number"];
+	
+	let modalEmail = document.getElementById("modal-form-email");
+	modalEmail.value = data["email"];
+
+	let modalKey = document.getElementById("modal-form-key");
+	modalKey.value = data["key"];
+
+	onResize();
+}
+
+function closeModal() {
+	let element = document.getElementById("modal");
+	element.classList.remove("modal-show");
+}
+
+function onResize() {
+	let content = document.getElementById("modal-content");
+	let parent = document.getElementById("content");
+	content.style.top = ((parent.offsetHeight / 2) - (content.offsetHeight / 2)) + "px";
+	content.style.left = ((parent.offsetWidth / 2) - (content.offsetWidth / 2)) + "px";
+}
+
+function updateUser() {
+	let request = new XMLHttpRequest();
+	request.open('POST', '/settings/users/update', true);
+	request.setRequestHeader('Content-Type', 'application/json');
+
+	request.onload = function() {
+		if (this.status >= 200 && this.status < 400) {
+			location.reload();
+		}
+	};
+
+	let modalName = document.getElementById("modal-form-name").value;
+	let modalNumber = document.getElementById("modal-form-number").value;
+	let modalEmail = document.getElementById("modal-form-email").value;
+	let modalKey = document.getElementById("modal-form-email").value;
+
+	request.send(JSON.stringify({ "name": modalName, "number": modalNumber, "email": modalEmail, "key": modalKey }));
+}
+
+window.onresize = onResize;
+
+</script>
 {% endblock %}
