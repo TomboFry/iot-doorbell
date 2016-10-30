@@ -23,7 +23,7 @@
 						<li><a href="/settings/notifications">Notifications</a></li>
 					</ul>
 				</li>
-				<li><a href="#" onclick="sendRequest('/ding','POST',function(){}); location.reload();">Ring Doorbell</a></li>
+				<li><a href="#" onclick="sendRequest('/ding','POST',location.reload.bind(location));">Ring Doorbell</a></li>
 			</ul>
 		</nav>
 		<div id="content">

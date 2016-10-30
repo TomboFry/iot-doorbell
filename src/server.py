@@ -54,6 +54,7 @@ def add_user():
 @app.route('/settings/users/update', methods=['POST'])
 def update_user():
     data = request.get_json()
+    print data['key']
     user = User(data['name'], data['number'], data['email'], data['key'])
     user.save()
     return ""
@@ -135,7 +136,7 @@ class User(object):
         if self.id == None:
             db.users.insert_one(post)
         else:
-            db.users.update( { "_id" : self.id }, post )      
+            db.users.update( { "_id" : ObjectId(self.id) }, post )      
 
 class Phone(object):
     def __init__(self):

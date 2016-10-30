@@ -138,7 +138,7 @@ function updateUser() {
 	let modalName = document.getElementById("modal-form-name").value;
 	let modalNumber = document.getElementById("modal-form-number").value;
 	let modalEmail = document.getElementById("modal-form-email").value;
-	let modalKey = document.getElementById("modal-form-email").value;
+	let modalKey = document.getElementById("modal-form-key").value;
 
 	request.send(JSON.stringify({ "name": modalName, "number": modalNumber, "email": modalEmail, "key": modalKey }));
 }
