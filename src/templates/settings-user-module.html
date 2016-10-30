@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% block title %} Settings {% endblock %}
+{% block subtitle %} User Modules {% endblock %}
+{% block head %} <link rel="stylesheet" href="{{ url_for('static', filename='css/settings-user-module.css') }}"> {% endblock %}
+{% block content %}
+
+<form name="form-time" action="#" method="post">
+	<label for="name">Name:</label><input type="text" name="name" id="form-name" value="{{user.name}}" required>
+
+	<div class="dropdown">
+		<div onclick="toggle('dropdown-phone')" class="dropdown-header">
+			<div class="dropdown-title">Phone</div>
+			<div class="dropdown-checkboxes">
+				<input type="checkbox" class="cb-low" name="phone-urgency" value="low">
+				<input type="checkbox" class="cb-medium" name="phone-urgency" value="medium">
+				<input type="checkbox" class="cb-high" name="phone-urgency" value="high">
+			</div>
+		</div>
+		<div id="dropdown-phone" class="dropdown-fields">
+			<input type="tel" id="form-phone" name="number" value="{{user.number}}" required>
+		</div>
+	</div>
+
+	<div class="dropdown">
+		<div onclick="toggle('dropdown-email')" class="dropdown-header">
+			<div class="dropdown-title">Email</div>
+			<div class="dropdown-checkboxes">
+				<input type="checkbox" class="cb-low" name="email-urgency" value="low">
+				<input type="checkbox" class="cb-medium" name="email-urgency" value="medium">
+				<input type="checkbox" class="cb-high" name="email-urgency" value="high">
+			</div>
+		</div>
+		<div id="dropdown-email" class="dropdown-fields">
+			<input type="email" id="form-email" name="email" value="{{user.email}}" required>
+		</div>
+	</div>
+
+	<button onclick="formSubmit()">Save Changes</button>
+</form>
+<script type="text/javascript">
+
+function toggle(elm_id) {
+	let elm = document.getElementById(elm_id);
+	elm.classList.toggle("open");
+}
+function formSubmit() {
+	let form = document.forms["form-time"];
+	console.log(form["phone-urgency"]);
+}
+
+</script>
+
+{% endblock %}

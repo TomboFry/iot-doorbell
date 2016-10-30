@@ -1,0 +1,66 @@
+.dropdown {
+	display: block;
+	width: 480px;
+	margin-top: 16px;
+}
+.dropdown-header {
+	position: relative;
+	width: 100%;
+	padding: 8px;
+	background-color: #eee;
+}
+.dropdown-header::after {
+	content: '';
+	float: none;
+	clear: both;
+	display: block;
+}
+.dropdown-title {
+	float: left;
+}
+.dropdown-checkboxes {
+	float: right;
+}
+.cb-low {
+	padding: 2px;
+	display: inline-block;
+	background-color: #2DD100;
+}
+.cb-medium {
+	padding: 2px;
+	display: inline-block;
+	background-color: #FF771D;
+}
+.cb-high {
+	padding: 2px;
+	display: inline-block;
+	background-color: #FF1900;
+}
+
+.dropdown-fields {
+	background-color: #ddd;
+	padding: 8px;
+	display: none;
+}
+.dropdown-fields.open {
+	display: block;
+}
+label {
+	display: block;
+	margin-bottom: 4px;
+}
+button {
+	border: 0;
+	background-color: #108CFF;
+	padding: 8px;
+	font-size: 16px;
+	border-radius: 6px;
+	margin-top: 16px;
+	color: #fff;
+}
+input[type="text"],input[type="tel"],input[type="email"] {
+	display: block;
+	padding: 4px;
+	font-size: 20px;
+	min-width: 320px;
+}

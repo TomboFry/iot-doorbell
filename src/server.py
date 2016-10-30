@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import math
+import json
 
 import module
 from alexa import Alexa
@@ -72,6 +73,10 @@ def update_user():
     user.save()
     return ""
 
+@app.route('/settings/users/modules/<string:user_id>')
+def page_settings_user_modules(user_id):
+    return render_template('settings-user-module.html', user=get_user(user_id))
+
 @app.route('/settings/users/delete', methods=['POST'])
 def delete_user():
     data = request.get_json()
@@ -126,10 +131,13 @@ def get_users():
         users.append(User(user["Name"],user["Number"],user["Email"],user["_id"]))
     return users
 
-@app.route('/settings/users/getuser/<string:user_id>', methods=['GET'])
 def get_user(user_id):
     user = db.users.find_one( { "_id": ObjectId(user_id) } )
-    return '{ "name": "' + user["Name"] + '", "number": "' + user["Number"] + '", "email": "' + user["Email"] + '", "key": "' + user_id + '" }'
+    return { "name": user["Name"], "number": user["Number"], "email": user["Email"], "key": user_id }
+
+@app.route('/settings/users/getuser/<string:user_id>', methods=['GET'])
+def get_user_json(user_id):
+    return json.dump(get_user(user_id))
 
 class User(object):
     def __init__(self, name, number, email, key=None):

@@ -34,7 +34,7 @@
 			<td>{{user.number}}</td>
 			<td>{{user.email}}</td>
 			<td class="form-btn-col">
-				<button onclick="edit('{{user.id}}');" class="form-btn-edit">🖉</button>
+				<a href="/settings/users/modules/{{user.id}}" class="form-btn-edit">🖉</a>
 				<button onclick="deleteUser('{{user.id}}');" class="form-btn-del">❌</button>
 			</td>
 		</tr>
