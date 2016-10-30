@@ -1,0 +1,5 @@
+#pip install
+pymongo
+flask
+flask-ask
+twilio
