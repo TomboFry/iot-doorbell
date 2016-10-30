@@ -3,6 +3,7 @@ from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import math
 
 
 client = MongoClient()
@@ -22,6 +23,10 @@ def page_dashboard():
 @app.route("/stats")
 def page_stats():
     return render_template('stats.html')
+
+@app.route("/stats/latest_ding_friendly")
+def friendly_ding():
+    return LastRing();
 
 @app.route("/stats/latest_ding")
 def stats_latest_ding():
@@ -145,10 +150,20 @@ ask = Ask(app, "/alexa")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
 def LastRing():
-    last = "never"
-    return last;
+    last = stats_latest_ding();
+    unit = 'seconds';
+    if last > 60:
+        last = math.floor(float(last)/60);
+        unit = 'minutes';
+
+    if last > 60:
+        last = math.floor(last/60);
+        unit = 'hours';
+
+    return str(int(round(last))) + ' ' + unit;
 
 def SetNotificationLevel(level):
+    urgency_set(level);
     return level;
 
 @ask.launch
@@ -166,7 +181,7 @@ def RingDoorBellIntent():
 
 @ask.intent('LastRingIntent')
 def LastRingIntent():
-    speech_text = 'The bell wast last rung at ' + LastRing()
+    speech_text = 'The bell wast last rung ' + LastRing() + ' ago'
     return statement(speech_text).simple_card('', speech_text)
 
 @ask.intent('NotificationLevelIntent',mapping={'level' : 'NotificationLevel'})
