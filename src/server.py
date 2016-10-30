@@ -62,9 +62,10 @@ def delete_user():
 def page_settings_notifications():
     return render_template('settings-notifications.html')
 
-@app.route('/stats/count')
-def dingcount():
-    data = db.dings.find().count()
+@app.route('/stats/count/<string:inLast>', methods=['GET'])
+def dingcount(inLast):
+    since = time.time()-int(inLast)
+    data = db.dings.find({"Time": {"$gte": since}}).count();
     return str(data);
 
 @app.route('/settings/urgency/<string:urgency>', methods=['GET'])

@@ -55,7 +55,7 @@ function updateText() {
 			element.innerText = ret_str + minutes + "m ";
 		}
 	});
-    sendRequest("/stats/count", (response, status) => {
+    sendRequest("/stats/count/604800", (response, status) => {
         if(status >= 200 && status < 400){
             let element = document.getElementById("ding-count-text");
             element.innerText=response;
