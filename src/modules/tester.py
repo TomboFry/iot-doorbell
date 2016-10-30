@@ -11,3 +11,6 @@ class Tester(DingPlugin):
         }
         for user in users:
             db.users.modules.tester.insert_one(config)
+
+    def get_name(self):
+        return "test"

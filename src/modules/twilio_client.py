@@ -19,3 +19,9 @@ class Twilio(DingPlugin):
         if not all([twilio_account_sid, twilio_auth_token, twilio_number]):
             print("twilio config not used")
         return (twilio_number, twilio_account_sid, twilio_auth_token)
+
+    def ding(user):
+        text("Doorbell rang", user.number)
+
+    def get_name(self):
+        return "twilio"

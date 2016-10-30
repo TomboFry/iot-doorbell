@@ -10,8 +10,11 @@ def load_modules(dir, known_plugins):
     names = [ basename(f)[:-3] for f in modules if isfile(f) ]
     modlist = dict(zip(names, modules));
 
+    mods = []
     for name in modlist.keys():
-        mod = imp.load_source(name, modlist[name])
+        mods.append(imp.load_source(name, modlist[name]))
+
+    return mods
 
 class DingPlugin(object):
     __metaclass__ = ABCMeta
@@ -33,4 +36,8 @@ class DingPlugin(object):
 
     @abstractmethod
     def cleanup(self):
+        pass
+
+    @abstractmethod
+    def get_name(self):
         pass
