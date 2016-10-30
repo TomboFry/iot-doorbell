@@ -145,6 +145,17 @@ class User(object):
         else:
             db.users.update( { "_id" : ObjectId(self.id) }, post )      
 
+    def notify(self, urgency):
+        notifiers = None
+        if urgency == 'low':
+            notifiers = priorities['low'] 
+        elif urgency == 'high':
+            notifiers = priorities['high']
+        elif urgency == 'medium':
+            notifiers = priorities['medium']
+
+        filter(lambda m: m.name in notifiers, modules).map(lambda m: m.ding(0))
+     
 if __name__ == "__main__":
     module.load_modules("modules", [])
     Alexa(app);
