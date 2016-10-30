@@ -1,18 +1,16 @@
-import time, pymongo, os, re
+import time, pymongo, os
 from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import logging
-from flask_ask import Ask, request, session, question, statement
+
 
 client = MongoClient()
-
 
 db = client.doorbell
 app = Flask(__name__)
 
-@app.route('/ding')
+@app.route('/ding', methods=['POST'])
 def handle_ring():
     ding()
     return "D00T"
@@ -23,7 +21,14 @@ def page_dashboard():
 
 @app.route("/stats")
 def page_stats():
-    return render_template('stats.html') 
+    return render_template('stats.html')
+
+@app.route("/stats/latest_ding")
+def stats_latest_ding():
+    data = db.dings.find().sort("Time", -1).limit(1)
+    if data != None:
+        latest = int(time.time()) - data[0]["Time"]
+        return str(latest)
 
 @app.route('/settings')
 def page_settings():
@@ -37,7 +42,7 @@ def page_settings_users():
 def add_user():
     new_user = User(request.form['name'], request.form['number'], request.form['email'])
     new_user.save()
-    return redirect(url_for('users'))
+    return redirect(url_for('page_settings_users'))
 
 @app.route('/settings/users/update', methods=['POST'])
 def update_user():
@@ -49,6 +54,7 @@ def update_user():
 @app.route('/settings/users/delete', methods=['POST'])
 def delete_user():
     data = request.get_json()
+    print data
     db.users.remove( { "_id" : ObjectId(data['key']) } )
     return ""
 
@@ -56,13 +62,27 @@ def delete_user():
 def page_settings_notifications():
     return render_template('settings-notifications.html')
 
+@app.route('/settings/urgency/<string:urgency>', methods=['GET'])
+def urgency_set(urgency):
+    if urgency == "low" or urgency == "medium" or urgency == "high":
+        db.urgency.update({}, {"status": urgency}, upsert=True)
+    return redirect(url_for('page_dashboard'))
+
+@app.route('/settings/urgency', methods=['GET'])
+def urgency_get():
+    data = db.urgency.find_one()
+    if data != None:
+        return data["status"]
+    else:
+        return ""
+
 def ding():
     post = {"Time": time.time()}
     db.dings.insert_one(post)
     notify()
 
 def notify():
-    return 0;
+    return 0
 
 def get_users():
     users = []
@@ -89,7 +109,6 @@ class User(object):
         else:
             db.users.update( { "_id" : self.id }, post )      
 
-    
 class Phone(object):
     def __init__(self):
         (twilio_number, twilio_account_sid, twilio_auth_token) = self.get_config()
@@ -111,11 +130,11 @@ class Phone(object):
 
 
 # alexa stuff
+from flask_ask import Ask, session, question, statement
+import logging
+
 ask = Ask(app, "/alexa")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
-
-def RingBell():
-    return;
 
 def LastRing():
     last = "never"
@@ -123,7 +142,6 @@ def LastRing():
 
 def SetNotificationLevel(level):
     return level;
-
 
 @ask.launch
 def launch():
@@ -133,7 +151,7 @@ def launch():
 
 @ask.intent('RingDoorBellIntent')
 def RingDoorBellIntent():
-    RingBell()
+    ding()
     speech_text = ''
     return statement(speech_text).simple_card('', speech_text)
 

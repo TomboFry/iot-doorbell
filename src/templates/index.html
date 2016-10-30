@@ -23,7 +23,7 @@
 						<li><a href="/settings/notifications">Notifications</a></li>
 					</ul>
 				</li>
-				<li><a href="#">Ring Doorbell</a></li>
+				<li><a href="#" onclick="sendRequest('/ding','POST',function(){})">Ring Doorbell</a></li>
 			</ul>
 		</nav>
 		<div id="content">
@@ -36,5 +36,19 @@
 			</section>
 		</div>
 	</div>
+	<script type="text/javascript">	
+	// Sends a request to `url`, calling `onload` when done.
+	function sendRequest(url, method, onload) {
+		if (typeof(method) === "function") {
+			onload = method;
+			method = "GET";
+		}
+
+		let request = new XMLHttpRequest();
+		request.addEventListener("load", function() { onload(this.response, this.status) });
+		request.open(method, url, true);
+		request.send();
+	}
+	</script>
 </body>
 </html>

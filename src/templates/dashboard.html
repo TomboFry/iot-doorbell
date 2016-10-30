@@ -3,24 +3,24 @@
 {% block head %} <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> {% endblock %}
 {% block content %}
 <div class="dash-buttons">
-	<div id="btn-urgency" class="dash-button urgency-low">
+	<div id="btn-urgency" onclick="toggleDropdown('urgency-dropdown')" class="dash-button">
 		<div class="dash-button-overlay"></div>
 		<div class="dash-button-title">Urgency</div>
-		<div class="dash-button-text">Low</div>
+		<div id="urgency-text" class="dash-button-text">Loading...</div>
+		<div id="urgency-dropdown">
+			<ul>
+				<li><a href="/settings/urgency/low" id="urgency-set-low">Low</a></li>
+				<li><a href="/settings/urgency/medium" id="urgency-set-medium">Medium</a></li>
+				<li><a href="/settings/urgency/high" id="urgency-set-high">High</a></li>
+			</ul>
+		</div>
 	</div>
-	<div id="urgency-dropdown">
-		<ul>
-			<li><a href="#" id="urgency-set-low">Low</a></li>
-			<li><a href="#" id="urgency-set-medium">Medium</a></li>
-			<li><a href="#" id="urgency-set-high">High</a></li>
-		</ul>
-	</div>
-	<div class="dash-button urgency-med">
+	<div class="dash-button">
 		<div class="dash-button-overlay"></div>
 		<div class="dash-button-title">Last Press</div>
-		<div class="dash-button-text">3 hours ago</div>
+		<div id="latest-ding-text" class="dash-button-text">Loading...</div>
 	</div>
-	<div class="dash-button urgency-high">
+	<div class="dash-button">
 		<div class="dash-button-overlay"></div>
 		<div class="dash-button-title">Presses this week?</div>
 		<div class="dash-button-text">4</div>
@@ -28,33 +28,44 @@
 </div>
 <script type="text/javascript">
 
+function toggleDropdown() {
+	let element = document.getElementById("urgency-dropdown");
+	let btn = document.getElementById("btn-urgency");
+	element.classList.toggle("open");
+}
+
+function updateText() {
+	sendRequest("/settings/urgency", (response, status) => {
+		if (status >= 200 && status < 400) {
+			let element = document.getElementById("urgency-text");
+			element.innerText = response;
+			let button = document.getElementById('btn-urgency');
+			button.classList.add("urgency-" + response);
+		}
+	});
+	sendRequest("/stats/latest_ding", (response, status) => {
+		if (status >= 200 && status < 400) {
+			let days = Math.round(response / 86400);
+			let hours = Math.round(response / 3600 % 3600);
+			let minutes = Math.round(response / 60 % 60);
+			let element = document.getElementById("latest-ding-text");
+			let ret_str = "";
+			if (days > 0) ret_str = days + "d ";
+			if (hours > 0) ret_str += hours + "h ";
+			element.innerText = ret_str + minutes + "m ";
+		}
+	});
+}
+
 function ready(fn) {
 	if (document.readyState != 'loading'){
-		console.log("Done");
 		fn();
 	} else {
-		console.log("Not yet");
 		document.addEventListener('DOMContentLoaded', fn);
 	}
 }
 
-function clickHandler(elm_id, fn) {
-	function(elm_id, fn) {
-		console.log("Getting element");
-		let element = document.getElementById(elm_id);
-		element.onclick = fn;
-	}
-}
-
-function toggleDropdown(elm_id) {
-	console.log("Doing the thing", elm_id);
-	let element = document.getElementById(elm_id);
-	element.classList.toggle("open");
-}
-
-ready(clickHandler("btn-urgency", toggleDropdown("urgency-dropdown")));
-
-
+ready(updateText);
 
 </script>
 {% endblock %}

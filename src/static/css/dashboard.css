@@ -34,11 +34,18 @@
 .dash-button:hover .dash-button-overlay {
 	opacity: 0.3;
 }
+.dash-button:active .dash-button-overlay {
+	opacity: 0.5;
+}
+
+#urgency-text {
+	text-transform: capitalize;
+}
 
 .urgency-low {
 	background-color: #2DD100;
 }
-.urgency-med {
+.urgency-medium {
 	background-color: #FF771D;
 }
 .urgency-high {
@@ -62,7 +69,55 @@
 #urgency-dropdown {
 	position: absolute;
 	display: none;
+	z-index: 1;
+	background-color: #333;
+	color: #fff;
+	top: 120px;
+	opacity: 0;
+	left: 80px;
+	width: 160px;
+	border-radius: 6px;
+}
+#urgency-dropdown a {
+	color: #fff;
+	text-align: center;
+	padding: 8px;
+	display: block;
+	text-decoration: none;
+	border-bottom: 1px solid #555;
+}
+#urgency-dropdown li:last-of-type a {
+	border-bottom: 0;
+	border-radius: 0 0 6px 6px;
+}
+#urgency-dropdown li:first-of-type a {
+	border-radius: 6px 6px 0 0;
+}
+#urgency-dropdown a:hover {
+	background-color: #444;
 }
 #urgency-dropdown.open {
 	display: block;
+	top: 128px;
+	opacity: 1;
+	-webkit-animation: dropdown 0.2s;
+	-o-animation: dropdown 0.2s;
+	animation: dropdown 0.2s;
+}
+
+@-webkit-keyframes dropdown {
+	from { top: 120px; opacity: 0; }
+	to { top: 128px; opacity: 1; }
+}
+@-o-keyframes dropdown {
+	from { top: 120px; opacity: 0; }
+	to { top: 128px; opacity: 1; }
+}
+@-moz-keyframes dropdown {
+	from { top: 120px; opacity: 0; }
+	to { top: 128px; opacity: 1; }
+}
+@keyframes dropdown {
+	from { top: 120px; opacity: 0; }
+	to { top: 128px; opacity: 1; }
 }
