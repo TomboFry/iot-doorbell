@@ -11,8 +11,8 @@ from alexa import Alexa
 
 HOST = os.environ.get('SERVER_ADDRESS') or '0.0.0.0'
 PORT = int(os.environ.get('SERVER_PORT') or '8080')
-MHOST = os.environ.get('MONGO_ADDRESS') or 'localhost'
-MPORT = int(os.environ.get('MONGO_PORT') or '27017')
+MHOST = os.environ.get('MONGODB_ADDRESS') or 'localhost'
+MPORT = int(os.environ.get('MONGODB_PORT') or '27017')
 
 client = MongoClient(MHOST, MPORT)
 db = client.doorbell
