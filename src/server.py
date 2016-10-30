@@ -62,6 +62,11 @@ def delete_user():
 def page_settings_notifications():
     return render_template('settings-notifications.html')
 
+@app.route('/stats/count')
+def dingcount():
+    data = db.dings.find().count()
+    return str(data);
+
 @app.route('/settings/urgency/<string:urgency>', methods=['GET'])
 def urgency_set(urgency):
     if urgency == "low" or urgency == "medium" or urgency == "high":
@@ -74,6 +79,8 @@ def urgency_get():
     if data != None:
         return data["status"]
     else:
+        db.urgency.update({}, {"status" : "medium"},upsert=True)
+        urgency_get()
         return ""
 
 def ding():

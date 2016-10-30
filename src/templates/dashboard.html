@@ -23,7 +23,7 @@
 	<div class="dash-button">
 		<div class="dash-button-overlay"></div>
 		<div class="dash-button-title">Presses this week?</div>
-		<div class="dash-button-text">4</div>
+		<div class="dash-button-text" id="ding-count-text">4</div>
 	</div>
 </div>
 <script type="text/javascript">
@@ -55,6 +55,12 @@ function updateText() {
 			element.innerText = ret_str + minutes + "m ";
 		}
 	});
+    sendRequest("/stats/count", (response, status) => {
+        if(status >= 200 && status < 400){
+            let element = document.getElementById("ding-count-text");
+            element.innerText=response;
+        }
+    });
 }
 
 function ready(fn) {
